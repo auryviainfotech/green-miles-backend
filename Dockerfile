@@ -9,4 +9,4 @@ RUN ./gradlew clean bootJar
 
 EXPOSE 10000
 
-CMD ["java","-jar","build/libs/backend-0.0.1-SNAPSHOT.jar"]
+CMD ["sh", "-c", "java -Dserver.port=$PORT -jar build/libs/backend-0.0.1-SNAPSHOT.jar"]
