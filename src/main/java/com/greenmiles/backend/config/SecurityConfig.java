@@ -26,7 +26,7 @@ public class SecurityConfig {
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthenticationFilter,
             AuthRateLimitFilter authRateLimitFilter,
-            @Value("${app.security.cors.allowed-origins:http://localhost:5173}") List<String> allowedOrigins) {
+            @Value("${app.security.cors.allowed-origins:http://localhost:5173,https://a41.03e.mytemp.website}") List<String> allowedOrigins) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.authRateLimitFilter = authRateLimitFilter;
         this.allowedOrigins = allowedOrigins;

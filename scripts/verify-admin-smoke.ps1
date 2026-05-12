@@ -1,5 +1,5 @@
 param(
-    [string]$BaseUrl = "http://localhost:8080",
+    [string]$BaseUrl = "https://green-miles-backend.onrender.com",
     [string]$AdminUsername = "admin",
     [string]$AdminPassword = "admin@123"
 )
