@@ -1,0 +1,157 @@
+{
+  "info": {
+    "name": "Green Miles Non-Payment APIs",
+    "_postman_id": "e53b38f7-78db-4a0f-96a4-f3f2d8f0795f",
+    "description": "Auth, booking, rides, notifications, driver, and admin APIs.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "userToken", "value": "" },
+    { "key": "driverToken", "value": "" },
+    { "key": "adminToken", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "User Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/v1/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Test User\",\n  \"phone\": \"9876543210\",\n  \"email\": \"testuser@greenmiles.in\",\n  \"password\": \"Password@123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "User Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/v1/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@greenmiles.in\",\n  \"password\": \"Password@123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Driver Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/v1/auth/driver/login",
+            "body": { "mode": "raw", "raw": "{\n  \"driverId\": 1,\n  \"phone\": \"9001001001\"\n}" }
+          }
+        },
+        {
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/api/v1/auth/admin/login",
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin@123\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Rides",
+      "item": [
+        {
+          "name": "Search Rides",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/rides/search?startCityId=1&endCityId=2&date=2026-04-17"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bookings (User/Admin Token)",
+      "item": [
+        {
+          "name": "Create Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{userToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/v1/bookings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"rideId\": 1,\n  \"pickupPointId\": 1,\n  \"dropPointId\": 7,\n  \"seatNumber\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "User Bookings",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }],
+            "url": "{{baseUrl}}/api/v1/bookings?userId=1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications (User/Admin Token)",
+      "item": [
+        {
+          "name": "Get Notifications",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }],
+            "url": "{{baseUrl}}/api/v1/notifications?userId=1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Driver (Driver/Admin Token)",
+      "item": [
+        {
+          "name": "Driver Rides",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{driverToken}}" }],
+            "url": "{{baseUrl}}/api/v1/drivers/1/rides"
+          }
+        },
+        {
+          "name": "Update Tracking",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{driverToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/v1/drivers/tracking",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"driverId\": 1,\n  \"rideId\": 1,\n  \"latitude\": 17.4435,\n  \"longitude\": 78.3772,\n  \"speed\": 48.5,\n  \"heading\": 120\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin (Admin Token)",
+      "item": [
+        {
+          "name": "Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": "{{baseUrl}}/api/v1/admin/dashboard"
+          }
+        }
+      ]
+    }
+  ]
+}
