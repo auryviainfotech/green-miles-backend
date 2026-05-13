@@ -155,6 +155,31 @@ class AuthServiceTest {
     }
 
     @Test
+    void loginAcceptsAdminCaseInsensitiveUsername() {
+        AuthService svc = new AuthService(
+                userRepository,
+                driverRepository,
+                sessionRepository,
+                refreshTokenRepository,
+                auditLogRepository,
+                jwtService,
+                passwordEncoder,
+                loginAttemptService,
+                securityMetricsService,
+                120L,
+                "Admin",
+                "SecretAdmin#9");
+        when(loginAttemptService.isLocked("admin")).thenReturn(false);
+        when(jwtService.generateToken("ADMIN:Admin", "ADMIN", "Admin")).thenReturn("jwt-admin");
+
+        AuthResponse response = svc.login(new LoginRequest("admin", "SecretAdmin#9"));
+
+        assertEquals(0L, response.userId());
+        assertEquals("jwt-admin", response.token());
+        verify(userRepository, never()).findByEmail(any());
+    }
+
+    @Test
     void logoutDeletesTokenFromSessionStore() {
         authService.logout("Bearer token-123");
         verify(sessionRepository).deleteByToken("token-123");

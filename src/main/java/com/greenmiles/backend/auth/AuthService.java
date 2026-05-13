@@ -170,7 +170,8 @@ public class AuthService {
             securityMetricsService.incrementLockoutBlocks();
             throw new IllegalArgumentException("Too many failed attempts. Try again later.");
         }
-        if (!adminUsername.equals(request.username().trim()) || !adminPassword.trim().equals(request.password().trim())) {
+        if (!adminUsername.equalsIgnoreCase(request.username().trim())
+                || !adminPassword.trim().equals(request.password().trim())) {
             loginAttemptService.recordFailure(identity);
             auditAuthFailure("ADMIN_LOGIN_FAILED", request.username(), "Invalid admin credentials");
             throw new IllegalArgumentException("Invalid admin credentials");
@@ -237,12 +238,12 @@ public class AuthService {
             return false;
         }
         String value = emailOrUsername.trim();
-        if (adminUsername.equals(value)) {
+        if (adminUsername.equalsIgnoreCase(value)) {
             return true;
         }
         if (value.contains("@")) {
-            String localPart = value.split("@", 2)[0];
-            return adminUsername.equals(localPart);
+            String localPart = value.split("@", 2)[0].trim();
+            return adminUsername.equalsIgnoreCase(localPart);
         }
         return false;
     }
